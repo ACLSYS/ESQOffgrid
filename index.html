@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EcoSolar Quote | Calculadora Solar OFF-GRID</title>
+  <meta name="description"
+    content="Dimensiona un sistema solar aislado (OFF-GRID) en Yucatán y Quintana Roo y obtén un estimado preliminar sin IVA.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="EcoSolar Quote">
+  <meta property="og:title" content="EcoSolar Quote | Calculadora Solar OFF-GRID">
+  <meta name="theme-color" content="#F3F7F4">
+  <meta name="color-scheme" content="light">
+  <style>
+
+    /* Paleta EcoSolar Quote (confirmada):
+       #047B50 principal · #058052 títulos · #0D904D énfasis · #FBB71F amarillo solar.
+       El amarillo NO se usa como texto sobre fondo claro (contraste insuficiente). */
+    :root {
+      --bg: #F3F7F4;
+      --card: #fff;
+      --tx: #10261B;
+      --mut: #5A6B61;
+      --bd: #DCE6DF;
+      --pri: #047B50;
+      --tit: #058052;
+      --acc: #0D904D;
+      --gold: #FBB71F;
+      --big: #047B50;
+      --on: #fff;
+      --err: #B3261E;
+      --errbg: #FDECEA;
+      --wrn: #7A5200;
+      --wrnbg: #FFF3D6;
+      --okbg: #E3F4EA;
+      --infbg: #E8F0FA;
+      --inf: #1F4F86;
+      color-scheme: light
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%
+    }
+
+    body {
+      font: 17px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--tx);
+      padding: calc(20px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))
+    }
+
+    main {
+      max-width: 480px;
+      margin: 0 auto
+    }
+
+    header {
+      margin-bottom: 20px;
+      text-align: center
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .brand img {
+      width: 80px;
+      height: 80px;
+      flex: none;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .18)
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: var(--tit)
+    }
+
+    .tag {
+      color: var(--mut);
+      font-size: 15px;
+      font-weight: 600
+    }
+
+    .sub {
+      color: var(--mut)
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--bd)
+    }
+
+    .sec {
+      margin-bottom: 22px
+    }
+
+    h2 {
+      font-size: 17px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--tit)
+    }
+
+    h2 i {
+      flex: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--pri);
+      color: var(--on);
+      font: 700 14px/26px inherit;
+      font-style: normal;
+      text-align: center
+    }
+
+    .f {
+      margin-bottom: 16px
+    }
+
+    .f:last-child {
+      margin-bottom: 0
+    }
+
+    label,
+    .lb {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px
+    }
+
+    select,
+    input[type=number],
+    input[type=text] {
+      width: 100%;
+      height: 52px;
+      font: inherit;
+      color: var(--tx);
+      background: var(--bg);
+      border: 1.5px solid transparent;
+      border-radius: 14px;
+      padding: 0 14px;
+      -webkit-appearance: none;
+      appearance: none
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' fill='none' stroke='%235A6B61' stroke-width='2'%3E%3Cpath d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px
+    }
+
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--acc);
+      outline-offset: 1px;
+      border-color: var(--acc)
+    }
+
+    input[aria-invalid=true] {
+      border-color: var(--err)
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield
+    }
+
+    input::-webkit-inner-spin-button,
+    input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0
+    }
+
+    .err {
+      color: var(--err);
+      font-size: 14px;
+      margin-top: 6px
+    }
+
+    .err:empty {
+      display: none
+    }
+
+    .err::before {
+      content: "⚠ "
+    }
+
+    .hint {
+      color: var(--mut);
+      font-size: 14px;
+      margin-top: 6px
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .row3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px
+    }
+
+    .modes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    .mode {
+      position: relative;
+      margin: 0;
+      font-weight: 400
+    }
+
+    .mode input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      z-index: 1
+    }
+
+    .mode .m {
+      display: block;
+      height: 100%;
+      padding: 12px 12px 12px 14px;
+      border-radius: 14px;
+      background: var(--bg);
+      border: 2px solid transparent;
+      font-size: 14px;
+      color: var(--mut);
+      line-height: 1.3
+    }
+
+    .mode .m b {
+      display: block;
+      font-size: 16px;
+      color: var(--tx);
+      margin-bottom: 4px;
+      line-height: 1.2
+    }
+
+    .mode input:checked+.m {
+      border-color: var(--pri);
+      background: var(--card);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .15)
+    }
+
+    .mode input:checked+.m b {
+      color: var(--pri)
+    }
+
+    .mode input:checked+.m b::after {
+      content: " ✓"
+    }
+
+    .mode input:focus-visible+.m {
+      outline: 3px solid var(--acc);
+      outline-offset: 2px
+    }
+
+    .chk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 400;
+      font-size: 14px;
+      margin: 0;
+      min-height: 44px
+    }
+
+    .chk input {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--pri);
+      flex: none
+    }
+
+    .cta {
+      display: block;
+      width: 100%;
+      height: 54px;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 27px;
+      background: var(--pri);
+      color: var(--on);
+      font: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      border-bottom: 3px solid var(--gold);
+      cursor: pointer
+    }
+
+    .cta:active {
+      transform: scale(.985)
+    }
+
+    .cta:focus-visible,
+    .btn:focus-visible,
+    .lnk:focus-visible {
+      outline: 3px solid var(--acc);
+      outline-offset: 2px
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1.5px solid var(--bd);
+      border-radius: 22px;
+      background: none;
+      color: var(--pri);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    .btn:hover {
+      border-color: var(--pri)
+    }
+
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    .lnk {
+      background: none;
+      border: 0;
+      padding: 0;
+      min-height: 44px;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--pri);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer
+    }
+
+    details {
+      border-top: 1px solid var(--bd);
+      padding-top: 6px;
+      margin-top: 8px
+    }
+
+    details summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 48px;
+      font-weight: 600;
+      color: var(--pri)
+    }
+
+    details summary::-webkit-details-marker {
+      display: none
+    }
+
+    details summary::after {
+      content: "›";
+      font-size: 24px;
+      transition: transform .2s
+    }
+
+    details[open]>summary::after {
+      transform: rotate(90deg)
+    }
+
+    details summary:focus-visible {
+      outline: 3px solid var(--acc);
+      border-radius: 8px
+    }
+
+    details .body {
+      padding-top: 6px
+    }
+
+    .grp {
+      font-size: 14px;
+      color: var(--pri);
+      font-weight: 700;
+      margin: 18px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--bd)
+    }
+
+    .ap {
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 10px
+    }
+
+    .ap-h {
+      display: grid;
+      grid-template-columns: 1fr 44px;
+      gap: 8px;
+      margin-bottom: 8px
+    }
+
+    .ap input[type=text],
+    .ap input[type=number],
+    .ap select {
+      background: var(--card);
+      height: 46px
+    }
+
+    .ap label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px
+    }
+
+    .ap .del {
+      border: 0;
+      background: none;
+      color: var(--mut);
+      font-size: 26px;
+      cursor: pointer;
+      border-radius: 12px
+    }
+
+    .ap-f {
+      margin-top: 8px
+    }
+
+    .ap-f select {
+      font-size: 14px
+    }
+
+    .res {
+      padding: 22px 18px
+    }
+
+    .res h2 {
+      display: block;
+      text-align: center;
+      margin-bottom: 4px
+    }
+
+    .empty {
+      color: var(--mut);
+      text-align: center;
+      padding: 8px 0
+    }
+
+    .mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+      text-align: center
+    }
+
+    .mini b {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -.02em;
+      color: var(--big);
+      line-height: 1.15
+    }
+
+    .mini span {
+      font-size: 13px;
+      color: var(--mut);
+      line-height: 1.25;
+      display: block
+    }
+
+    .al {
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.35;
+      display: flex;
+      gap: 8px
+    }
+
+    .al::before {
+      flex: none;
+      font-weight: 700
+    }
+
+    .al.error {
+      background: var(--errbg);
+      color: var(--err)
+    }
+
+    .al.error::before {
+      content: "✕"
+    }
+
+    .al.aviso {
+      background: var(--wrnbg);
+      color: var(--wrn)
+    }
+
+    .al.aviso::before {
+      content: "⚠"
+    }
+
+    .al.info {
+      background: var(--infbg);
+      color: var(--inf)
+    }
+
+    .al.info::before {
+      content: "i"
+    }
+
+    .tbl2 {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      margin-top: 8px
+    }
+
+    .tbl2 th,
+    .tbl2 td {
+      padding: 9px 4px;
+      border-bottom: 1px solid var(--bd);
+      text-align: left;
+      vertical-align: top
+    }
+
+    .tbl2 th {
+      font-weight: 600;
+      color: var(--mut);
+      width: 38%
+    }
+
+    .tbl2 td small {
+      display: block;
+      color: var(--mut);
+      font-size: 13px;
+      margin-top: 2px
+    }
+
+    .tbl2 td.r,
+    .tbl2 th.r {
+      text-align: right
+    }
+
+    .tbl2 tr.tot td,
+    .tbl2 tr.tot th {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--tx);
+      border-bottom: 0;
+      border-top: 3px solid var(--gold)
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700
+    }
+
+    .badge.ok {
+      background: var(--okbg);
+      color: var(--pri)
+    }
+
+    .badge.no {
+      background: var(--errbg);
+      color: var(--err)
+    }
+
+    .badge.pe {
+      background: var(--wrnbg);
+      color: var(--wrn)
+    }
+
+    .lst {
+      list-style: none;
+      padding: 0;
+      font-size: 14px
+    }
+
+    .lst li {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--bd)
+    }
+
+    .lst li small {
+      display: block;
+      color: var(--mut)
+    }
+
+    .pasos {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--mut);
+      padding-left: 18px
+    }
+
+    .pasos li {
+      margin-bottom: 4px
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap
+    }
+
+    .note {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--mut);
+      text-align: center
+    }
+
+    .chips {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap
+    }
+
+    footer {
+      max-width: 480px;
+      margin: 20px auto 0;
+      padding-top: 16px;
+      border-top: 3px solid var(--gold);
+      text-align: center
+    }
+
+    .cot {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1.5px solid var(--bd);
+      border-radius: 22px;
+      color: var(--pri);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none
+    }
+
+    .cot:hover {
+      border-color: var(--pri)
+    }
+
+    .cot:focus-visible {
+      outline: 3px solid var(--acc);
+      outline-offset: 2px
+    }
+
+    .footer-credit {
+      font-size: .78rem;
+      color: var(--mut);
+      text-align: center;
+      width: 100%;
+      margin-top: 12px
+    }
+
+    .footer-credit a {
+      color: var(--pri);
+      font-weight: 600
+    }
+
+    .footer-credit a:hover {
+      text-decoration: underline
+    }
+
+    @media (max-width:360px) {
+      .modes {
+        grid-template-columns: 1fr
+      }
+
+      .row3 {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important
+      }
+    }
+  
+    .beta {
+      background: var(--wrnbg);
+      color: var(--wrn);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 13px;
+      line-height: 1.35;
+      margin-bottom: 14px;
+      text-align: center
+    }
+
+    .big {
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--big);
+      text-align: center;
+      line-height: 1.05
+    }
+
+    .unit {
+      text-align: center;
+      color: var(--mut);
+      font-weight: 600
+    }
+
+    .cap {
+      color: var(--mut);
+      font-size: 14px;
+      margin-bottom: 8px
+    }
+
+    .chart {
+      width: 100%;
+      height: auto;
+      display: block
+    }
+
+    .chart line.ax {
+      stroke: var(--bd);
+      stroke-width: 1
+    }
+
+    .chart rect.bar {
+      fill: var(--acc)
+    }
+
+    .chart g.crit rect.bar {
+      fill: var(--gold)
+    }
+
+    .chart g.on rect.bar {
+      stroke: var(--tx);
+      stroke-width: 2
+    }
+
+    .chart rect.hit {
+      fill: transparent
+    }
+
+    .chart text {
+      fill: var(--mut);
+      font-size: 9px;
+      paint-order: stroke;
+      stroke: var(--card);
+      stroke-width: 3px
+    }
+
+    .chart line.cons {
+      stroke: var(--tx);
+      stroke-width: 1.5;
+      stroke-dasharray: 4 3
+    }
+
+    .sel {
+      min-height: 22px;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 6px
+    }
+
+    .leg {
+      font-size: 13px;
+      color: var(--mut);
+      text-align: center;
+      margin-top: 4px
+    }
+
+    .prow {
+      display: grid;
+      grid-template-columns: 1fr 140px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px
+    }
+
+    .prow label {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600
+    }
+
+    .prow label small {
+      display: block;
+      font-weight: 400;
+      color: var(--mut)
+    }
+
+    .ptab input {
+      height: 40px;
+      font-size: 15px
+    }
+
+    .addrow {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-top: 4px
+    }
+
+    .addrow select {
+      height: 46px
+    }
+
+    .tot-w {
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 14px;
+      background: var(--infbg);
+      color: var(--inf)
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="brand">
+        <img src="data:image/png;base64,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" width="80" height="80" alt="Logo de EcoSolar Quote">
+        <div>
+          <h1>EcoSolar Quote</h1>
+          <p class="tag">Calculadora solar OFF-GRID</p>
+        </div>
+      </div>
+      <p class="sub">Dimensiona un sistema solar aislado (sin CFE) y estima su costo con tus propios precios.</p>
+    </header>
+
+    <p class="beta"><b>Versión de trabajo.</b> Metodología <span id="ver"></span>: fórmulas, datos solares y
+      parámetros pendientes de aprobación técnica.</p>
+
+    <form id="f" class="card" novalidate>
+      <div class="sec">
+        <h2><i>1</i>¿Dónde está la instalación?</h2>
+        <div class="row" style="grid-template-columns:1.25fr 1fr">
+          <div class="f"><label for="est">Estado</label><select id="est">
+              <option>Quintana Roo</option>
+              <option>Yucatán</option>
+            </select></div>
+          <div class="f"><label for="loc">Localidad</label><select id="loc"></select></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h2 id="t2"><i>2</i>¿Cuánta energía consumen?</h2>
+        <div class="modes" role="radiogroup" aria-labelledby="t2">
+          <label class="mode"><input type="radio" name="modo" value="con" checked><span class="m"><b>Conozco el
+                consumo</b>En kWh por día o por mes.</span></label>
+          <label class="mode"><input type="radio" name="modo" value="ap"><span class="m"><b>Por aparatos</b>Suma watts y
+              horas de uso.</span></label>
+        </div>
+        <div id="g-con" style="margin-top:14px">
+          <div class="row">
+            <div class="f"><label for="c">Consumo</label>
+              <input id="c" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej. 8" aria-describedby="e-c">
+            </div>
+            <div class="f"><label for="cu">Unidad</label><select id="cu">
+                <option value="dia">kWh por día</option>
+                <option value="mes">kWh por mes</option>
+              </select></div>
+          </div>
+          <p class="hint" id="h-c">Si es por mes, se divide entre 30 para obtener kWh por día.</p>
+          <p class="err" id="e-c" role="alert"></p>
+        </div>
+        <div id="g-ap" hidden style="margin-top:14px">
+          <div id="aps"></div>
+          <div class="addrow">
+            <select id="tipo" aria-label="Tipo de aparato"></select>
+            <button type="button" class="btn" id="add">+ Agregar</button>
+          </div>
+          <p class="hint">Los watts típicos son orientativos: ajústalos con la placa del aparato. Escribe las horas
+            reales de operación al día (los equipos que ciclan, como refrigerador o minisplit, no trabajan todo el
+            tiempo). El periodo de consumo solo se usa con la autonomía “Solo noche”; con 1 a 3 días todos los aparatos se
+            alimentan de la batería.</p>
+          <p class="tot-w" id="ap-tot" hidden></p>
+          <p class="err" id="e-ap" role="alert"></p>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h2><i>3</i><label for="aut" style="margin:0;font-size:inherit">¿Cuánta autonomía necesitan?</label></h2>
+        <select id="aut">
+          <option value="noche">Solo noche</option>
+          <option value="1" selected>1 día</option>
+          <option value="2">2 días</option>
+          <option value="3">3 días (máximo)</option>
+        </select>
+        <p class="hint" id="h-aut"></p>
+      </div>
+
+      <div class="sec">
+        <h2><i>4</i>Configuración</h2>
+        <div class="f"><label for="vs">Voltaje de salida</label><select id="vs">
+            <option value="127">127 V</option>
+            <option value="220">2 × 127 V (220/240 V)</option>
+          </select>
+          <p class="hint" id="h-vs"></p>
+        </div>
+        <div class="f"><label for="mot">¿Hay cargas con motor o pico de arranque?</label><select id="mot">
+            <option value="no">No</option>
+            <option value="si">Sí (bomba, compresor, refrigerador…)</option>
+          </select></div>
+        <div id="g-mot" hidden>
+          <div class="row">
+            <div class="f"><label for="mw">Motor mayor (W)</label><input id="mw" type="number" inputmode="decimal" min="0"
+                step="any" placeholder="Ej. 750"></div>
+            <div class="f"><label for="mp">Pico de arranque (W)</label><input id="mp" type="number" inputmode="decimal"
+                min="0" step="any" placeholder="Si lo conoces"></div>
+          </div>
+          <p class="hint">Si no conoces el pico, se usa un factor orientativo y se muestra una advertencia.</p>
+        </div>
+        <div class="f"><label for="ps">Potencia máxima simultánea (W) <span style="font-weight:400;color:var(--mut)">(opcional
+              con aparatos)</span></label>
+          <input id="ps" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej. 2500" aria-describedby="h-ps">
+          <p class="hint" id="h-ps">Suma de los equipos que pueden operar al mismo tiempo.</p>
+        </div>
+        <div class="f"><label for="mxp">Máximo de paneles que caben en el techo <span style="font-weight:400;color:var(--mut)">(opcional)</span></label>
+          <input id="mxp" type="number" inputmode="numeric" min="1" step="1" placeholder="Sin límite" aria-describedby="h-mxp e-mxp">
+          <p class="hint" id="h-mxp">Si el sistema necesita más, se usa este máximo y se calcula en cuántos días se recupera la batería.</p>
+          <p class="err" id="e-mxp" role="alert"></p>
+        </div>
+      </div>
+
+      <details id="avz">
+        <summary>Ajustes avanzados (opcional)</summary>
+        <div class="body">
+          <p class="hint" style="margin-top:0">No son obligatorios para un estimado. Sin estos datos la compatibilidad
+            eléctrica queda como <b>pendiente de verificar</b>.</p>
+          <p class="grp">Panel solar</p>
+          <div class="f"><label for="pan">Potencia del panel</label><select id="pan">
+              <option value="610">610 W</option>
+              <option value="720">720 W</option>
+              <option value="730" selected>730 W</option>
+              <option value="custom">Otra…</option>
+            </select></div>
+          <div class="f" id="g-cust" hidden><label for="cust">Potencia (W)</label>
+            <input id="cust" type="number" inputmode="numeric" min="100" max="1000" step="1">
+            <p class="err" id="e-cust" role="alert"></p>
+          </div>
+          <p class="hint">Datos de la ficha técnica del panel (no se asumen por la potencia):</p>
+          <div class="row3">
+            <div class="f"><label for="kVoc">Voc (V)</label><input id="kVoc" class="cfg" type="number" inputmode="decimal" step="any"></div>
+            <div class="f"><label for="kVmp">Vmp (V)</label><input id="kVmp" class="cfg" type="number" inputmode="decimal" step="any"></div>
+            <div class="f"><label for="kBv">Coef. Voc (%/°C)</label><input id="kBv" class="cfg" type="number" inputmode="decimal" step="any" placeholder="-0.25"></div>
+          </div>
+          <div class="row">
+            <div class="f"><label for="kIsc">Isc (A)</label><input id="kIsc" class="cfg" type="number" inputmode="decimal" step="any"></div>
+            <div class="f"><label for="kImp">Imp (A)</label><input id="kImp" class="cfg" type="number" inputmode="decimal" step="any"></div>
+          </div>
+          <p class="grp">Controlador MPPT</p>
+          <label class="chk"><input type="checkbox" id="mInt" class="cfg">El inversor integra el MPPT (inversor híbrido / todo en uno)</label>
+          <p class="hint">Datos de la ficha técnica del MPPT que se usará:</p>
+          <div class="row">
+            <div class="f"><label for="mVmax">Voltaje FV máximo (V)</label><input id="mVmax" class="cfg" type="number" inputmode="decimal" step="any"></div>
+            <div class="f"><label for="mVmin">Mínimo de ventana MPPT (V)</label><input id="mVmin" class="cfg" type="number" inputmode="decimal" step="any"></div>
+          </div>
+          <div class="row3">
+            <div class="f"><label for="mIin">I entrada (A)</label><input id="mIin" class="cfg" type="number" inputmode="decimal" step="any"></div>
+            <div class="f"><label for="mIsc">Isc máx. (A)</label><input id="mIsc" class="cfg" type="number" inputmode="decimal" step="any"></div>
+            <div class="f"><label for="mIch">I carga (A)</label><input id="mIch" class="cfg" type="number" inputmode="decimal" step="any"></div>
+          </div>
+          <p class="grp">Supuestos de cálculo (provisionales)</p>
+          <p class="hint" style="margin-top:0">Valores de trabajo, pendientes de aprobación. Puedes editarlos; se guardan en
+            este dispositivo.</p>
+          <div id="params"></div>
+          <div class="btns"><button type="button" class="btn" id="rst-par">Restablecer supuestos</button></div>
+        </div>
+      </details>
+    </form>
+
+    <section class="card res" aria-labelledby="t-res">
+      <h2 id="t-res">Sistema estimado</h2>
+      <p class="sr" id="live" aria-live="polite"></p>
+      <p class="empty" id="vacio">Aquí aparecerá tu estimación. Indica el consumo.</p>
+      <div id="vivo" hidden>
+        <p class="big" id="o-k">—</p>
+        <p class="unit">kWp de paneles</p>
+        <div class="mini">
+          <div><b id="o-n">—</b><span>paneles</span></div>
+          <div><b id="o-b">—</b><span>kWh de batería</span></div>
+          <div><b id="o-i">—</b><span>kW de inversor</span></div>
+        </div>
+        <table class="tbl2" id="resumen"></table>
+        <div id="alertas"></div>
+        <details id="det">
+          <summary>Ver detalles técnicos</summary>
+          <div class="body" id="detbody"></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="t-ch" id="c-ch" hidden>
+      <h2 id="t-ch" style="color:var(--tit)">Generación diaria por mes</h2>
+      <p class="cap">Energía diaria que producen los paneles cada mes frente a lo que el sistema necesita (línea). El
+        sistema se dimensiona con el mes más bajo (barra dorada). Toca una barra para ver su valor.</p>
+      <div id="chart" role="group" aria-label="Gráfica de generación diaria por mes"></div>
+      <p class="sel" id="sel" aria-live="polite"></p>
+      <p class="leg">Línea: energía diaria necesaria (cargas + recuperación de batería)</p>
+    </section>
+
+    <section class="card" aria-labelledby="t-cot">
+      <h2 id="t-cot" style="color:var(--tit)">Cotización estimada</h2>
+      <p class="hint" style="margin-top:0">Captura tus propios precios una sola vez; se guardan en este dispositivo.</p>
+      <details id="precios">
+        <summary>Mis precios (sin IVA)</summary>
+        <div class="body">
+          <div class="prow"><label for="pPanel">Panel solar<small>precio por pieza</small></label><input id="pPanel" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pBat">Batería<small>precio por unidad (módulo)</small></label><input id="pBat" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pInv">Inversor<small>precio por equipo</small></label><input id="pInv" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pMppt">Controlador MPPT<small>por equipo, si es independiente</small></label><input id="pMppt" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pProt">Protecciones<small>importe estimado</small></label><input id="pProt" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pMat">Material y estructura<small>importe estimado</small></label><input id="pMat" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pMano">Mano de obra<small>importe</small></label><input id="pMano" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+          <div class="prow"><label for="pOtros">Transporte y otros<small>opcional</small></label><input id="pOtros" class="cfg pr" type="number" inputmode="decimal" min="0" step="any" placeholder="$"></div>
+        </div>
+      </details>
+      <p class="empty" id="cot-vacio">Calcula primero el sistema para ver la cotización.</p>
+      <div id="cot" hidden></div>
+    </section>
+
+    <section class="card" aria-labelledby="t-resp">
+      <h2 id="t-resp" style="color:var(--tit)">Respaldo de configuración</h2>
+      <p class="hint" style="margin-top:0">Los datos se guardan en este navegador y dispositivo. Exporta un respaldo para
+        evitar perder tu configuración.</p>
+      <p class="al aviso" id="al-resp" hidden></p>
+      <div class="btns">
+        <button type="button" class="btn" id="exp">Exportar respaldo</button>
+        <button type="button" class="btn" id="imp">Importar respaldo</button>
+        <button type="button" class="btn" id="rst">Restablecer todo</button>
+      </div>
+      <input type="file" id="file" accept="application/json,.json" hidden>
+      <p class="err" id="e-resp" role="alert" style="text-align:center"></p>
+      <p class="hint" id="ok-resp" style="text-align:center;color:var(--pri)"></p>
+    </section>
+
+    <p class="note">Estimación preliminar; no sustituye una visita técnica ni un diseño de ingeniería.<br>Total sin IVA.</p>
+  </main>
+
+  <footer>
+    <a class="cot" href="https://www.ecosolarquote.app" target="_blank" rel="noopener">Genera tu cotización con ESQ</a>
+    <p class="footer-credit">
+      Desarrollado por
+      <a href="https://aclsys.net/servicios" target="_blank" rel="noopener">ACLSYS</a>
+    </p>
+  </footer>
+
+  <script>
+    "use strict";
+    /* ======================================================================
+       1. CONFIGURACIÓN TÉCNICA (un solo objeto). Todo valor es PROVISIONAL
+          hasta que el CTO apruebe la metodología (plan v1.1, sección 10).
+       ====================================================================== */
+    const CFG = {
+      metodologia: "v0.2 borrador (bloque A)",
+      formato: 1,
+      // Perfil solar PROVISIONAL (kWh/m²/día por mes). Es el de la referencia, aproximado y SIN ajuste por localidad.
+      // Pendiente: tabla estática de las 16 localidades con PVGIS / NASA POWER (fuente, periodo, inclinación, fecha).
+      hspRegional: [4.3, 5.0, 5.8, 6.3, 6.2, 5.8, 6.0, 5.9, 5.2, 4.7, 4.2, 3.9],
+      inclinacion: 15, // supuesto pendiente de aprobación
+      bancos: [12.8, 25.6, 51.2], // V nominales evaluados
+      // Plazo de recuperación objetivo según autonomía: se lee de params (editable), no está fijo en el motor.
+      plazoDe: { noche: "plazoNoche", "1": "plazo1", "2": "plazo2", "3": "plazo3" },
+      // Coordenadas aproximadas; la propiedad hsp (12 valores) se llenará con PVGIS. Si es null se usa el perfil regional.
+      localidades: {
+        "Quintana Roo": {
+          "Cancún": { lat: 21.16, lon: -86.85, hsp: null }, "Playa del Carmen": { lat: 20.63, lon: -87.08, hsp: null },
+          "Chetumal": { lat: 18.50, lon: -88.30, hsp: null }, "Cozumel": { lat: 20.51, lon: -86.95, hsp: null },
+          "Tulum": { lat: 20.21, lon: -87.47, hsp: null }, "Felipe Carrillo Puerto": { lat: 19.58, lon: -88.05, hsp: null },
+          "Puerto Aventuras": { lat: 20.50, lon: -87.23, hsp: null }, "Alfredo V. Bonfil": { lat: 21.03, lon: -86.87, hsp: null }
+        },
+        "Yucatán": {
+          "Mérida": { lat: 20.97, lon: -89.62, hsp: null }, "Izamal": { lat: 20.93, lon: -89.02, hsp: null },
+          "Valladolid": { lat: 20.69, lon: -88.20, hsp: null }, "Tizimín": { lat: 21.14, lon: -88.15, hsp: null },
+          "Umán": { lat: 20.88, lon: -89.75, hsp: null }, "Motul": { lat: 21.10, lon: -89.28, hsp: null },
+          "Ticul": { lat: 20.40, lon: -89.54, hsp: null }, "Tekax": { lat: 20.20, lon: -89.29, hsp: null }
+        }
+      },
+      // k, etiqueta, unidad, valor por defecto, mín, máx, fuente/justificación
+      params: [
+        { k: "noche", l: "Consumo nocturno", u: "% del consumo diario", v: 60, min: 10, max: 100, s: "Plan §5.2, provisional. Con aparatos clasificados solo aplica a los marcados Ambos" },
+        { k: "dod", l: "Profundidad de descarga (DoD)", u: "%", v: 80, min: 50, max: 100, s: "Plan §5.9, pendiente de validar" },
+        { k: "etaInv", l: "Eficiencia del inversor", u: "%", v: 90, min: 70, max: 99, s: "Ejemplo del plan §5.3, pendiente" },
+        { k: "etaDesc", l: "Eficiencia de descarga de batería", u: "%", v: 95, min: 80, max: 100, s: "Provisional" },
+        { k: "etaChg", l: "Eficiencia de carga de batería", u: "%", v: 95, min: 80, max: 100, s: "Provisional" },
+        { k: "pr", l: "Rendimiento FV a bus DC (temperatura, cableado, suciedad, MPPT)", u: "%", v: 80, min: 50, max: 95, s: "Referencia del HTML original, pendiente" },
+        { k: "plazo1", l: "Plazo de recuperación: autonomía de 1 día", u: "días", v: 1, min: 0.5, max: 14, s: "Bloque A, meta de diseño (no garantía)" },
+        { k: "plazo2", l: "Plazo de recuperación: autonomía de 2 días", u: "días", v: 1.5, min: 0.5, max: 14, s: "Bloque A, meta de diseño (no garantía)" },
+        { k: "plazo3", l: "Plazo de recuperación: autonomía de 3 días", u: "días", v: 2, min: 0.5, max: 14, s: "Bloque A, meta de diseño (no garantía)" },
+        { k: "plazoNoche", l: "Plazo de recuperación: Solo noche", u: "días", v: 1, min: 0.5, max: 14, s: "Bloque A, meta de diseño (no garantía)" },
+        { k: "margen", l: "Margen del inversor sobre potencia simultánea", u: "%", v: 25, min: 0, max: 100, s: "Provisional" },
+        { k: "iDC", l: "Corriente DC máxima práctica del banco", u: "A", v: 100, min: 20, max: 400, s: "Provisional: define el voltaje del banco" },
+        { k: "battKwh", l: "Capacidad nominal por módulo de batería", u: "kWh", v: 5.12, min: 0.5, max: 50, s: "Módulo LiFePO4 de referencia, editable" },
+        { k: "battKw", l: "Potencia continua por módulo (BMS)", u: "kW", v: 5.12, min: 0.5, max: 50, s: "Provisional" },
+        { k: "surge", l: "Factor de arranque orientativo (motores)", u: "×", v: 3, min: 1, max: 10, s: "Provisional; usar el pico real si se conoce" },
+        { k: "tmin", l: "Temperatura mínima de diseño", u: "°C", v: 10, min: -10, max: 30, s: "Provisional (Voc en frío)" },
+        { k: "tcell", l: "Temperatura de celda en calor", u: "°C", v: 70, min: 40, max: 90, s: "Plan §5.7 (65 a 70 °C)" }
+      ],
+      aparatos: [ // watts típicos orientativos y editables, sin marcas
+        { n: "Refrigerador", w: 150 }, { n: "Minisplit", w: 1000 }, { n: "Televisión", w: 100 }, { n: "Iluminación LED", w: 10 },
+        { n: "Ventilador", w: 60 }, { n: "Bomba de agua", w: 750 }, { n: "Computadora", w: 100 }, { n: "Microondas", w: 1200 },
+        { n: "Lavadora", w: 500 }, { n: "Otro", w: 100 }
+      ],
+      protecciones: [
+        ["Protección DC de los paneles", "interruptor o fusible y desconectador"],
+        ["Protección del banco de baterías", "fusible o interruptor DC, dimensionado a la corriente del banco"],
+        ["Protección de salida AC", "interruptor termomagnético"],
+        ["Supresor de sobretensiones", "DC y AC"],
+        ["Cable solar y conectores", "calibre según corriente y distancia"],
+        ["Cableado de baterías", "calibre según corriente del banco"],
+        ["Estructura de montaje", "según tipo de techo"],
+        ["Puesta a tierra", "electrodo y conductor"]
+      ],
+      meses: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      mesesL: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    };
+
+    /* ======================================================================
+       2. MOTOR DE CÁLCULO (sin acceso al DOM). Entradas normalizadas -> resultados.
+       ====================================================================== */
+    const Motor = {
+      hspDe(est, loc) {
+        const l = (CFG.localidades[est] || {})[loc];
+        return l && Array.isArray(l.hsp) && l.hsp.length === 12 ? { v: l.hsp, prov: false } : { v: CFG.hspRegional, prov: true };
+      },
+      // inp: {kwhDia, aut, mot, motW, motPico, psim, panelW, hsp[12]}; P: supuestos; pf, mp: perfiles
+      dimensionar(inp, P, pf, mp) {
+        const r = { avisos: [], info: [] };
+        const noche = P.noche / 100, dod = P.dod / 100, eI = P.etaInv / 100, eD = P.etaDesc / 100, eC = P.etaChg / 100, pr = P.pr / 100;
+        r.eAC = inp.kwhDia;                              // kWh/día en AC
+        r.eDC = r.eAC / eI;                              // kWh/día en bus DC
+        // Solo noche: si hay aparatos clasificados se usa su consumo nocturno (Noche 100 %, Día 0 %, Ambos = % global);
+        // si no, el % global sobre el consumo total. 1 a 3 días: todo el consumo (cero generación solar).
+        r.eNoche = inp.aut === "noche" ? (Number.isFinite(inp.eNocheAC) ? inp.eNocheAC : r.eAC * noche) : NaN;
+        r.eAut = inp.aut === "noche" ? r.eNoche : r.eAC * Number(inp.aut);   // energía AC a cubrir sin sol
+        r.plazo = P[CFG.plazoDe[inp.aut]];               // meta de recuperación (días), desde la configuración
+        // PENDIENTE DE VALIDACIÓN (CTO): tratamiento de las pérdidas de carga/descarga sobre el consumo diario que pasa por la
+        // batería. La convención de abajo NO se ha modificado; cambiarla solo en este bloque (eDC, eSale, eRec, kWpNec).
+        r.eSale = r.eAut / (eI * eD);                    // energía extraída del banco
+        r.eNom = r.eSale / dod;                          // capacidad nominal necesaria
+        r.eRec = r.eSale / eC / r.plazo;                 // kWh/día a reponer
+        r.hCrit = Math.min(...inp.hsp); r.mCrit = inp.hsp.indexOf(r.hCrit);
+        r.eNecDia = r.eDC + r.eRec;                      // lo que deben generar los paneles por día (mes crítico)
+        r.kWpNec = r.eNecDia / (r.hCrit * pr);
+        r.kWpCargas = r.eDC / (r.hCrit * pr);            // solo cubrir el consumo diario
+        r.nBase = Math.max(1, Math.ceil(r.kWpNec * 1000 / inp.panelW));
+        r.maxPan = Number.isInteger(inp.maxPan) && inp.maxPan >= 1 ? inp.maxPan : null;
+        r.limitado = r.maxPan !== null && r.nBase > r.maxPan;
+        const nObj = r.limitado ? r.maxPan : r.nBase;
+        // Inversor
+        r.pSim = Number.isFinite(inp.psim) && inp.psim > 0 ? inp.psim : NaN;
+        if (Number.isFinite(r.pSim)) {
+          r.pCont = Math.ceil(r.pSim * (1 + P.margen / 100) / 100) * 100;
+          if (inp.mot) {
+            if (Number.isFinite(inp.motPico) && inp.motPico > 0) r.pPico = Math.max(r.pCont, r.pSim - (inp.motW || 0) + inp.motPico);
+            else if (Number.isFinite(inp.motW) && inp.motW > 0) { r.pPico = r.pSim + inp.motW * (P.surge - 1); r.avisos.push(["aviso", `Sin pico de arranque real: se estimó con un factor orientativo de ${P.surge}×. Confirma el dato del motor.`]) }
+            else { r.pPico = NaN; r.avisos.push(["aviso", "Hay cargas con motor, pero no hay datos de arranque: no se puede validar el pico del inversor."]) }
+          } else r.pPico = NaN;
+          r.pDC = r.pCont / eI;
+          const opt = CFG.bancos.find(v => r.pDC / v <= P.iDC);
+          r.vBanco = opt || CFG.bancos[CFG.bancos.length - 1];
+          r.iDC = r.pDC / r.vBanco;
+          if (!opt) r.avisos.push(["aviso", `Aun a ${r.vBanco} V la corriente del banco (${Math.round(r.iDC)} A) supera el límite de referencia (${P.iDC} A). Requiere revisión técnica.`]);
+        } else {
+          r.pCont = NaN; r.pPico = NaN; r.vBanco = NaN; r.iDC = NaN;
+          r.avisos.push(["aviso", "Potencia simultánea no definida: el inversor y el voltaje del banco quedan pendientes."]);
+        }
+        // Baterías
+        r.nBatE = Math.max(1, Math.ceil(r.eNom / P.battKwh));
+        r.nBatP = Number.isFinite(r.pDC) ? Math.ceil(r.pDC / 1000 / P.battKw) : 0;
+        r.nBat = Math.max(r.nBatE, r.nBatP);
+        r.batPorPotencia = r.nBatP > r.nBatE;
+        r.eNomReal = r.nBat * P.battKwh; r.eUtilReal = r.eNomReal * dod;
+        const usoAC = r.eUtilReal * eD * eI;
+        r.horas = inp.aut === "noche" ? (r.eAut > 0 ? usoAC / r.eAut * 12 : NaN) : usoAC / r.eAC * 24;
+        if (inp.aut === "noche" && !(r.eAut > 0)) r.avisos.push(["aviso", "Todos los aparatos están clasificados como diurnos: no hay consumo nocturno que cubrir con la batería."]);
+        if (r.batPorPotencia) r.info.push("El número de baterías lo define la potencia del inversor (límite del BMS), no solo los kWh.");
+        // Paneles + compatibilidad
+        const c = this.compat(nObj, inp.panelW, r.vBanco, P, pf, mp, pr, r.maxPan);
+        r.compat = c; r.nPan = c.n || nObj;
+        r.kWp = r.nPan * inp.panelW / 1000;
+        r.genDia = inp.hsp.map(h => r.kWp * h * pr);
+        // Recuperación con el arreglo realmente disponible (limitado o no)
+        r.excedente = r.genDia[r.mCrit] - r.eDC;         // kWh/día que sobran para recargar en el mes crítico
+        r.eRecTotal = r.eSale / eC;                      // kWh a reponer en la batería
+        r.diasRec = r.eRecTotal <= 0 ? 0 : (r.excedente > 0 ? r.eRecTotal / r.excedente : Infinity);
+        r.estadoRec = r.eRecTotal <= 0 ? "cumple" : (!(r.excedente > 0) ? "no-rec" : (r.diasRec <= r.plazo * 1.001 ? "cumple" : "no-cumple"));
+        if (r.limitado) r.avisos.push(["info", `Arreglo limitado a ${r.nPan} paneles (el cálculo pedía ${r.nBase}).`]);
+        if (r.estadoRec === "no-rec") r.avisos.push(["error", "NO RECUPERABLE CON EL ARREGLO DISPONIBLE: no hay excedente de energía para recargar la batería en el mes crítico."]);
+        else if (r.estadoRec === "no-cumple") r.avisos.push(["aviso", `No cumple la meta de recuperación: la batería tardaría unos ${r.diasRec.toFixed(1)} días en el mes crítico (meta: ${r.plazo} día(s)).`]);
+        return r;
+      },
+      compat(n, W, V, P, pf, mp, pr, maxN) {
+        const falt = [];
+        [["Voc", pf.voc], ["Vmp", pf.vmp], ["Isc", pf.isc], ["Imp", pf.imp], ["coeficiente de Voc", pf.bv]].forEach(([t, v]) => { if (!(Number.isFinite(v))) falt.push(`${t} del panel`) });
+        [["voltaje FV máximo", mp.vmax], ["mínimo de la ventana", mp.vmin], ["corriente de entrada", mp.iin], ["Isc máxima", mp.isc], ["corriente de carga", mp.ich]].forEach(([t, v]) => { if (!(Number.isFinite(v) && v > 0)) falt.push(`${t} del MPPT`) });
+        if (!Number.isFinite(V)) falt.push("voltaje del banco (falta la potencia simultánea)");
+        if (falt.length) return { estado: "pe", msgs: ["Faltan datos del panel o del MPPT (ver detalles técnicos)."], det: ["Faltan: " + falt.join(", ")], n: null };
+        if (!(pf.bv < 0)) return { estado: "pe", msgs: ["El coeficiente de Voc debe ser negativo (por ejemplo −0.25 %/°C)."], n: null };
+        const vocF = pf.voc * (1 + pf.bv / 100 * (P.tmin - 25)), vmpH = pf.vmp * (1 + pf.bv / 100 * (P.tcell - 25));
+        const nsMax = Math.floor(mp.vmax / vocF), nsMin = Math.ceil(mp.vmin / vmpH);
+        const det = [`Voc corregido a ${P.tmin} °C: ${vocF.toFixed(1)} V por panel`, `Vmp a ${P.tcell} °C (aprox. con el coeficiente de Voc): ${vmpH.toFixed(1)} V por panel`, `Paneles en serie permitidos: ${nsMin} a ${nsMax}`];
+        if (nsMax < 1) return { estado: "no", msgs: [`NO COMPATIBLE: un solo panel (${vocF.toFixed(1)} V en frío) excede el voltaje máximo del MPPT (${mp.vmax} V).`], n: null, det };
+        if (nsMin > nsMax) return { estado: "no", msgs: [`NO COMPATIBLE: ningún número de paneles en serie cumple a la vez el voltaje máximo (${mp.vmax} V) y el mínimo de la ventana (${mp.vmin} V).`], n: null, det };
+        let best = null;
+        for (let ns = nsMax; ns >= Math.max(1, nsMin); ns--) { let tot = Math.ceil(n / ns) * ns; if (maxN && tot > maxN) tot = Math.floor(maxN / ns) * ns; if (tot < ns) continue; if (!best || Math.abs(tot - n) < Math.abs(best.tot - n)) best = { ns, tot } }
+        if (!best) return { estado: "no", msgs: ["NO COMPATIBLE: no cabe una cadena completa de paneles dentro del máximo de paneles indicado."], n: null, det };
+        const np = best.tot / best.ns;
+        let nM = 1;
+        const iCarga = best.tot * W * pr / V;
+        const need = () => Math.max(Math.ceil(np * pf.isc / mp.isc), Math.ceil(np * pf.imp / mp.iin), Math.ceil(iCarga / mp.ich));
+        nM = Math.max(1, need());
+        while (nM <= np && Math.ceil(np / nM) * pf.isc > mp.isc) nM++;
+        if (nM > np) return { estado: "no", msgs: ["NO COMPATIBLE: la corriente de una sola cadena excede los límites del MPPT."], n: null, det };
+        det.push(`Arreglo: ${np} cadena(s) de ${best.ns} paneles (${best.tot} paneles)`, `Isc total del arreglo: ${(np * pf.isc).toFixed(1)} A · corriente de carga estimada: ${iCarga.toFixed(0)} A a ${V} V`);
+        const msgs = ["Límites comprobados con los datos capturados."];
+        if (nM > 1) msgs.push(`Se requieren ${nM} controladores MPPT (por corriente).`);
+        if (best.tot !== n) msgs.push(`Se ajustó de ${n} a ${best.tot} paneles para cerrar las cadenas.`);
+        return { estado: "ok", msgs, n: best.tot, ns: best.ns, np, nMppt: nM, det };
+      }
+    };
+
+    /* ======================================================================
+       3. MOTOR DE COTIZACIÓN (independiente del dimensionamiento)
+       ====================================================================== */
+    const Cotizador = {
+      calcular(r, pre, integrado) {
+        const g = k => Number.isFinite(pre[k]) && pre[k] > 0 ? pre[k] : 0;
+        const nM = r.compat.nMppt || 1;
+        const l = [
+          ["Equipos", "Paneles solares", r.nPan, "pPanel", ""],
+          ["Equipos", "Baterías", r.nBat, "pBat", ""],
+          ["Equipos", "Inversor", Number.isFinite(r.pCont) ? 1 : 0, "pInv", Number.isFinite(r.pCont) ? "" : "pendiente de potencia"],
+          ["Equipos", "Controlador MPPT", integrado ? 0 : nM, "pMppt", integrado ? "integrado en el inversor" : (r.compat.nMppt ? "" : "cantidad por confirmar")]
+        ].map(([gr, n, q, k, nota]) => ({ gr, n, q, pu: g(k), t: q * g(k), nota }));
+        const fijos = [["Protecciones y materiales", "Protecciones", "pProt"], ["Protecciones y materiales", "Material y estructura", "pMat"], ["Mano de obra", "Mano de obra", "pMano"], ["Otros gastos", "Transporte y otros", "pOtros"]]
+          .map(([gr, n, k]) => ({ gr, n, q: null, pu: null, t: g(k), nota: "" }));
+        const todo = l.concat(fijos), sum = gr => todo.filter(x => x.gr === gr).reduce((a, x) => a + x.t, 0);
+        return { todo, equipos: sum("Equipos"), prot: sum("Protecciones y materiales"), mano: sum("Mano de obra"), otros: sum("Otros gastos"), total: todo.reduce((a, x) => a + x.t, 0) };
+      }
+    };
+
+    /* ======================================================================
+       4. ALMACENAMIENTO LOCAL + IMPORT/EXPORT
+       ====================================================================== */
+    const KEY = "esq-offgrid-v1";
+    const PRE_IDS = ["pPanel", "pBat", "pInv", "pMppt", "pProt", "pMat", "pMano", "pOtros"];
+    const PERF_IDS = ["kVoc", "kVmp", "kBv", "kIsc", "kImp", "mVmax", "mVmin", "mIin", "mIsc", "mIch"];
+    const $ = id => document.getElementById(id);
+    const store = {
+      get() { try { return localStorage.getItem(KEY) } catch (e) { return null } },
+      set(v) { try { localStorage.setItem(KEY, v); return true } catch (e) { return false } },
+      del() { try { localStorage.removeItem(KEY) } catch (e) { } }
+    };
+    const numOrNull = id => { const v = $(id).value.trim(); const n = Number(v); return v === "" || !Number.isFinite(n) ? null : n };
+    function snapshot() {
+      const o = { formato: CFG.formato, metodologia: CFG.metodologia, guardado: new Date().toISOString(), precios: {}, perfiles: {}, params: {} };
+      PRE_IDS.forEach(k => o.precios[k] = numOrNull(k));
+      PERF_IDS.forEach(k => o.perfiles[k] = numOrNull(k));
+      o.perfiles.mInt = $("mInt").checked; o.perfiles.pan = $("pan").value; o.perfiles.cust = numOrNull("cust");
+      CFG.params.forEach(p => o.params[p.k] = readParam(p.k));
+      return o;
+    }
+    function validar(o) {
+      const fail = m => ({ ok: false, msg: m });
+      if (!o || typeof o !== "object" || Array.isArray(o)) return fail("El archivo no es un respaldo válido.");
+      if (typeof o.formato !== "number") return fail("El archivo no tiene número de versión; no se importó.");
+      if (o.formato > CFG.formato) return fail("El respaldo es de una versión más reciente de la calculadora; no se importó.");
+      if (o.formato < CFG.formato) return fail("El respaldo es de una versión anterior sin migración disponible; no se importó.");
+      for (const k of PRE_IDS) { const v = o.precios && o.precios[k]; if (!(v === null || (typeof v === "number" && v >= 0 && v <= 1e9))) return fail(`Precio inválido: ${k}. No se importó nada.`) }
+      for (const k of PERF_IDS) { const v = o.perfiles && o.perfiles[k]; if (!(v === null || v === undefined || (typeof v === "number" && Number.isFinite(v)))) return fail(`Dato de perfil inválido: ${k}. No se importó nada.`) }
+      for (const p of CFG.params) { const v = o.params && o.params[p.k]; if (v === undefined) continue; if (!(typeof v === "number" && v >= p.min && v <= p.max)) return fail(`Supuesto inválido: ${p.l}. No se importó nada.`) }
+      const pf = o.perfiles || {};
+      if (!(["610", "720", "730", "custom"].includes(String(pf.pan)))) return fail("Potencia de panel inválida. No se importó nada.");
+      return { ok: true };
+    }
+    function aplicar(o) {
+      PRE_IDS.forEach(k => $(k).value = o.precios[k] ?? "");
+      PERF_IDS.forEach(k => $(k).value = o.perfiles[k] ?? "");
+      $("mInt").checked = !!o.perfiles.mInt; $("pan").value = String(o.perfiles.pan); $("cust").value = o.perfiles.cust ?? "";
+      CFG.params.forEach(p => $("par-" + p.k).value = (o.params || {})[p.k] ?? p.v);
+    }
+    function guardar() { store.set(JSON.stringify(snapshot())) }
+
+    /* ======================================================================
+       5. INTERFAZ
+       ====================================================================== */
+    const fmt = (v, d = 0) => Number.isFinite(v) ? v.toLocaleString("es-MX", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—";
+    const mxn = v => "$" + fmt(v, 2);
+    const num = id => { const v = $(id).value.trim(); return v === "" ? NaN : Number(v) };
+    const modo = () => document.querySelector("input[name=modo]:checked").value;
+    const touched = {};
+    function chk(id, eid, ok, msg) { const show = !ok && touched[id]; $(id).setAttribute("aria-invalid", String(show)); $(eid).textContent = show ? msg : ""; return ok }
+    let apps = [{ n: "Refrigerador", w: 150, q: 1, h: NaN, s: false, p: "ambos" }];
+    let sel = null, genDatos = null, ultimo = null;
+
+    function readParam(k) { const v = Number($("par-" + k).value); const p = CFG.params.find(x => x.k === k); return Number.isFinite(v) && v >= p.min && v <= p.max ? v : p.v }
+    function params() { const P = {}; CFG.params.forEach(p => P[p.k] = readParam(p.k)); return P }
+
+    function pintaLoc() { $("loc").innerHTML = Object.keys(CFG.localidades[$("est").value]).map(k => `<option>${k}</option>`).join("") }
+    function pintaParams() {
+      $("params").innerHTML = CFG.params.map(p => `<div class="prow ptab"><label for="par-${p.k}">${p.l}<small>${p.u} · ${p.s}</small></label><input id="par-${p.k}" class="cfg" type="number" inputmode="decimal" step="any" min="${p.min}" max="${p.max}" value="${p.v}"></div>`).join("");
+    }
+    function pintaApps() {
+      $("aps").innerHTML = apps.map((a, i) => `<div class="ap" data-i="${i}">
+        <div class="ap-h"><div><label for="an${i}">Aparato</label><input id="an${i}" type="text" data-f="n" value="${String(a.n).replace(/"/g, "&quot;")}" maxlength="40"></div><button type="button" class="del" data-del="${i}" aria-label="Quitar aparato">×</button></div>
+        <div class="row3">
+          <div><label for="aw${i}">Watts</label><input id="aw${i}" type="number" inputmode="decimal" min="0" step="any" data-f="w" value="${Number.isFinite(a.w) ? a.w : ""}"></div>
+          <div><label for="aq${i}">Cantidad</label><input id="aq${i}" type="number" inputmode="numeric" min="1" step="1" data-f="q" value="${Number.isFinite(a.q) ? a.q : ""}"></div>
+          <div><label for="ah${i}">Horas/día</label><input id="ah${i}" type="number" inputmode="decimal" min="0" max="24" step="any" data-f="h" value="${Number.isFinite(a.h) ? a.h : ""}"></div>
+        </div>
+        <div class="ap-f"><label for="ap${i}">Periodo de consumo</label><select id="ap${i}" data-f="p"><option value="ambos"${a.p === "ambos" ? " selected" : ""}>Día y noche (ambos)</option><option value="noche"${a.p === "noche" ? " selected" : ""}>Solo noche</option><option value="dia"${a.p === "dia" ? " selected" : ""}>Solo día</option></select></div>
+        <div class="ap-f"><label class="chk"><input type="checkbox" data-f="s"${a.s ? " checked" : ""}>Puede operar al mismo tiempo que otros</label></div></div>`).join("");
+    }
+
+    function leer() {
+      const m = modo(); let ok = true, kwh = NaN;
+      if (m === "con") {
+        const v = num("c"); ok = chk("c", "e-c", Number.isFinite(v) && v > 0 && v <= 20000, "Ingresa un consumo mayor a 0.");
+        kwh = $("cu").value === "mes" ? v / 30 : v;
+        if (ok && kwh > 500) { /* consumo muy alto: se avisa en resultados */ }
+      } else {
+        let bad = false, sum = 0, sumN = 0; const gN = readParam("noche") / 100;
+        apps.forEach(a => { const good = Number.isFinite(a.w) && a.w > 0 && Number.isInteger(a.q) && a.q >= 1 && Number.isFinite(a.h) && a.h >= 0 && a.h <= 24; if (!good) bad = true; else { const e = a.w * a.q * a.h / 1000; sum += e; sumN += e * (a.p === "noche" ? 1 : a.p === "dia" ? 0 : gN) } });
+        ok = !bad && apps.length > 0 && sum > 0;
+        $("e-ap").textContent = !ok && touched.ap ? "Completa watts, cantidad (entero) y horas reales de uso (0 a 24) en cada aparato." : "";
+        kwh = sum; leer.eN = sumN;
+        const sim = apps.reduce((t, a) => t + (a.s && Number.isFinite(a.w) && Number.isInteger(a.q) ? a.w * a.q : 0), 0);
+        $("ap-tot").hidden = !(sum > 0);
+        $("ap-tot").textContent = `Consumo estimado: ${fmt(sum, 2)} kWh por día · Simultáneo marcado: ${fmt(sim)} W`;
+        $("h-ps").textContent = sim > 0 ? `Si lo dejas vacío se usa lo marcado como simultáneo: ${fmt(sim)} W.` : "Marca los aparatos que operan al mismo tiempo o escribe la potencia aquí.";
+        leer.sim = sim;
+      }
+      if (m === "con") { leer.eN = NaN; $("h-ps").textContent = "Suma de los equipos que pueden operar al mismo tiempo."; leer.sim = 0 }
+      if (!ok) return null;
+      const w = $("pan").value === "custom" ? num("cust") : Number($("pan").value);
+      if (!chk("cust", "e-cust", Number.isFinite(w) && w >= 100 && w <= 1000, "Ingresa una potencia entre 100 y 1000 W.")) return null;
+      let maxPan = null; const mxv = $("mxp").value.trim();
+      if (mxv === "") { $("mxp").setAttribute("aria-invalid", "false"); $("e-mxp").textContent = "" }
+      else { const v = Number(mxv); if (!chk("mxp", "e-mxp", Number.isInteger(v) && v >= 1 && v <= 10000, "Escribe un número entero de 1 o más.")) return null; maxPan = v }
+      let ps = num("ps"); if (!(ps > 0) && leer.sim > 0) ps = leer.sim;
+      const hs = Motor.hspDe($("est").value, $("loc").value);
+      return { kwhDia: kwh, aut: $("aut").value, mot: $("mot").value === "si", motW: num("mw"), motPico: num("mp"), psim: ps, panelW: w, maxPan, eNocheAC: m === "ap" ? leer.eN : NaN, hsp: hs.v, hspProv: hs.prov };
+    }
+    function perfiles() {
+      const g = id => { const v = numOrNull(id); return v === null ? NaN : v };
+      return { pf: { voc: g("kVoc"), vmp: g("kVmp"), bv: g("kBv"), isc: g("kIsc"), imp: g("kImp") }, mp: { vmax: g("mVmax"), vmin: g("mVmin"), iin: g("mIin"), isc: g("mIsc"), ich: g("mIch") } };
+    }
+
+    function chart(r, hsp) {
+      genDatos = r.genDia;
+      const W = 340, H = 170, mx = Math.max(...r.genDia, r.eNecDia) * 1.08, bw = W / 12, ch = H - 34;
+      const yl = H - 22 - r.eNecDia / mx * ch;
+      let s = `<svg class="chart" viewBox="0 0 ${W} ${H}"><line class="ax" x1="0" x2="${W}" y1="${H - 22}" y2="${H - 22}"/>`;
+      r.genDia.forEach((v, i) => {
+        const h = v / mx * ch;
+        s += `<g data-i="${i}" role="button" tabindex="0" aria-label="${CFG.mesesL[i]}: ${fmt(v, 1)} kWh por día" class="${i === r.mCrit ? "crit" : ""}${i === sel ? " on" : ""}"><rect class="hit" x="${i * bw}" y="0" width="${bw}" height="${H - 18}"/><rect class="bar" x="${i * bw + 4}" y="${H - 22 - h}" width="${bw - 8}" height="${h}" rx="3"/><text x="${i * bw + bw / 2}" y="${H - 8}" text-anchor="middle">${CFG.meses[i]}</text></g>`;
+      });
+      s += `<line class="cons" x1="0" x2="${W}" y1="${yl}" y2="${yl}"/><text x="2" y="${Math.max(10, yl - 4)}">${fmt(r.eNecDia, 1)} kWh/día</text></svg>`;
+      $("chart").innerHTML = s; $("c-ch").hidden = false; pintaSel();
+    }
+    function pintaSel() { $("sel").textContent = sel === null || !genDatos ? "" : `${CFG.mesesL[sel]}: ${fmt(genDatos[sel], 1)} kWh por día` }
+
+    function render(inp, r, P) {
+      const c = r.compat;
+      $("o-k").textContent = fmt(r.kWp, 2); $("o-n").textContent = fmt(r.nPan); $("o-b").textContent = fmt(r.eNomReal, 1);
+      $("o-i").textContent = Number.isFinite(r.pCont) ? fmt(r.pCont / 1000, 1) : "—";
+      $("live").textContent = `Sistema estimado: ${fmt(r.kWp, 2)} kWp, ${r.nPan} paneles, ${fmt(r.eNomReal, 1)} kWh de batería.`;
+      const badge = c.estado === "ok" ? `<span class="badge ok">Compatible</span>` : c.estado === "no" ? `<span class="badge no">No compatible</span>` : `<span class="badge pe">Pendiente de verificar</span>`;
+      const mppt = c.nMppt ? `${c.nMppt} controlador(es) MPPT` : (Number.isFinite(r.vBanco) ? "Por definir según datos del MPPT" : "Pendiente");
+      const vs = $("vs").value === "220" ? "2 × 127 V (split-phase, 220/240 V)" : "127 V monofásico";
+      $("resumen").innerHTML = `
+        <tr><th>Paneles</th><td>${fmt(r.nPan)} × ${fmt(inp.panelW)} W<small>${fmt(r.kWp, 2)} kWp en total</small></td></tr>
+        <tr><th>FV para consumo</th><td>${fmt(r.kWpCargas, 2)} kWp<small>Solo cubrir el consumo diario (mes crítico)</small></td></tr>
+        <tr><th>FV con recuperación</th><td>${fmt(r.kWpNec, 2)} kWp<small>Consumo + recargar la batería en la meta de ${fmt(r.plazo, 1)} día(s)</small></td></tr>
+        ${r.limitado ? `<tr><th>FV disponible</th><td>${fmt(r.kWp, 2)} kWp<small>Limitado a ${fmt(r.nPan)} paneles (se necesitan ${fmt(r.nBase)})</small></td></tr>` : ""}
+        <tr><th>Batería</th><td>${fmt(r.nBat)} módulo(s) de ${fmt(P.battKwh, 2)} kWh<small>${fmt(r.eNomReal, 1)} kWh nominal · ${fmt(r.eUtilReal, 1)} kWh útil</small></td></tr>
+        <tr><th>Inversor</th><td>${Number.isFinite(r.pCont) ? fmt(r.pCont / 1000, 2) + " kW continuo" : "Pendiente"}<small>${Number.isFinite(r.pPico) ? "Arranque estimado: " + fmt(r.pPico / 1000, 2) + " kW · " : ""}Salida ${vs}</small></td></tr>
+        <tr><th>Banco</th><td>${Number.isFinite(r.vBanco) ? fmt(r.vBanco, 1) + " V" : "Pendiente"}<small>${Number.isFinite(r.iDC) ? "≈ " + fmt(r.iDC) + " A en el lado DC" : "Se define con la potencia del inversor"}</small></td></tr>
+        <tr><th>MPPT</th><td>${mppt}</td></tr>
+        <tr><th>Compatibilidad</th><td>${badge}<small>${c.msgs.join(" ")}</small></td></tr>
+        <tr><th>Recuperación</th><td>${r.estadoRec === "cumple" ? `<span class="badge ok">Cumple la meta</span>` : r.estadoRec === "no-cumple" ? `<span class="badge pe">No cumple la meta</span>` : `<span class="badge no">No recuperable</span>`}<small>${r.estadoRec === "no-rec" ? "No recuperable con el arreglo disponible" : `Plazo real ≈ ${fmt(r.diasRec, 1)} día(s) · meta ${fmt(r.plazo, 1)} día(s)`}</small></td></tr>
+        <tr><th>Autonomía</th><td>≈ ${fmt(r.horas, 0)} h sin sol<small>${inp.aut === "noche" ? "Horas de noche cubiertas" : "Con consumo uniforme (supuesto)"} · sin generación solar</small></td></tr>`;
+      // Alertas
+      const al = [];
+      if (inp.hspProv) al.push(["info", "Datos solares PROVISIONALES: perfil regional único, sin ajuste por localidad. Pendiente de PVGIS / NASA POWER."]);
+      if (inp.aut === "2" || inp.aut === "3") al.push(["aviso", "Más autonomía aumenta mucho el costo de las baterías."]);
+      if (inp.kwhDia > 100) al.push(["aviso", `El consumo (${fmt(inp.kwhDia, 1)} kWh/día) es muy alto: verifica la unidad.`]);
+      if (c.estado === "no") c.msgs.forEach(m => al.push(["error", m]));
+      if (c.estado === "pe") al.push(["aviso", "Compatibilidad eléctrica pendiente de verificar: captura los datos de panel y MPPT en Ajustes avanzados."]);
+      r.avisos.forEach(a => al.push(a)); r.info.forEach(a => al.push(["info", a]));
+      $("alertas").innerHTML = al.map(([t, m]) => `<p class="al ${t}">${m}</p>`).join("");
+      // Detalles
+      const rows = [
+        ["Mes crítico", `${CFG.mesesL[r.mCrit]}: ${fmt(r.hCrit, 1)} kWh/m²/día${inp.hspProv ? " (provisional)" : ""}`],
+        ["Energía diaria en AC", `${fmt(r.eAC, 2)} kWh`], ["Energía diaria en bus DC", `${fmt(r.eDC, 2)} kWh (÷ eficiencia del inversor)`],
+        ["Autonomía solicitada", inp.aut === "noche" ? (Number.isFinite(inp.eNocheAC) ? `Solo noche: ${fmt(r.eNoche, 2)} kWh nocturnos (aparatos: noche 100 %, día 0 %, ambos ${P.noche} %)` : `Solo noche (${P.noche} % del consumo)`) : `${inp.aut} día(s), todos los aparatos, sin generación solar`],
+        ["Energía extraída del banco", `${fmt(r.eSale, 2)} kWh`], ["Capacidad nominal requerida", `${fmt(r.eNom, 2)} kWh (÷ DoD ${P.dod} %)`],
+        ["Recuperación diaria", `${fmt(r.eRec, 2)} kWh en la meta de ${fmt(r.plazo, 1)} día(s)`], ["Energía a generar por día", `${fmt(r.eNecDia, 2)} kWh`],
+        ["Potencia FV necesaria", `${fmt(r.kWpNec, 2)} kWp = energía ÷ (HSP crítica × ${P.pr} %)`],
+        ["Excedente para recargar", `${fmt(r.excedente, 2)} kWh/día en el mes crítico`],
+        ["Recuperación real", Number.isFinite(r.diasRec) ? `${fmt(r.diasRec, 2)} días (meta ${fmt(r.plazo, 1)})` : "NO RECUPERABLE CON EL ARREGLO DISPONIBLE"],
+        ["Batería por", r.batPorPotencia ? "potencia del inversor (BMS)" : "energía (kWh)"]
+      ].concat((c.det || []).map(d => ["Compatibilidad", d]));
+      $("detbody").innerHTML = `<table class="tbl2">${rows.map(([a, b]) => `<tr><th>${a}</th><td>${b}</td></tr>`).join("")}</table>
+        <p class="grp">Protecciones y materiales (lista general mínima)</p><ul class="lst">${CFG.protecciones.map(([a, b]) => `<li>${a}<small>${b}</small></li>`).join("")}</ul>
+        <p class="al aviso">Pendiente de validación (CTO): tratamiento de las pérdidas de carga y descarga sobre el consumo diario que pasa por la batería. La fórmula vigente se mantiene sin cambios hasta su aprobación.</p>
+        <p class="hint">Inclinación de referencia: ${CFG.inclinacion}° (supuesto pendiente). Metodología ${CFG.metodologia}. Los supuestos usados se editan en Ajustes avanzados.</p>`;
+      chart(r, inp.hsp);
+      renderCot(r);
+    }
+    function renderCot(r) {
+      const pre = {}; PRE_IDS.forEach(k => pre[k] = numOrNull(k) ?? NaN);
+      const q = Cotizador.calcular(r, pre, $("mInt").checked);
+      $("cot-vacio").hidden = true; $("cot").hidden = false;
+      const grupo = (t, v) => `<tr><th>${t}</th><td class="r">${mxn(v)}</td></tr>`;
+      const lin = q.todo.filter(x => x.q !== null).map(x => `<tr><th>${x.n}</th><td>${x.q} × ${x.pu ? mxn(x.pu) : "sin precio"}${x.nota ? `<small>${x.nota}</small>` : ""}</td><td class="r">${mxn(x.t)}</td></tr>`).join("");
+      $("cot").innerHTML = `<table class="tbl2">${lin}</table>
+        <table class="tbl2">${grupo("Equipos", q.equipos)}${grupo("Protecciones y materiales", q.prot)}${grupo("Mano de obra", q.mano)}${grupo("Otros gastos", q.otros)}<tr class="tot"><th>Total estimado</th><td class="r">${mxn(q.total)}</td></tr></table>
+        <p class="hint"><b>Total sin IVA. Falta el IVA.</b></p>
+        ${q.total === 0 ? `<p class="al info">Captura tus precios en “Mis precios” para ver el importe.</p>` : ""}
+        ${r.compat.estado !== "ok" ? `<p class="al aviso">Compatibilidad eléctrica pendiente de verificar. El importe puede cambiar.</p>` : ""}`;
+    }
+    function calc() {
+      const h = { noche: "Cubre las horas de noche con la batería; de día el sistema se recarga.", "1": "Aguanta un día completo sin sol. Valor recomendado por defecto.", "2": "Aguanta dos días sin sol. Aumenta mucho el costo de baterías.", "3": "Máximo permitido. Más autonomía se resuelve con generador de respaldo." };
+      $("h-aut").textContent = h[$("aut").value] + " Se asume cero generación solar.";
+      $("h-vs").textContent = $("vs").value === "220" ? "En México el “220” suele ser 2 fases de 127 V (split-phase): elige un inversor 120/240 V." : "Inversor monofásico de 120/127 V.";
+      $("g-con").hidden = modo() !== "con"; $("g-ap").hidden = modo() !== "ap";
+      $("g-mot").hidden = $("mot").value !== "si"; $("g-cust").hidden = $("pan").value !== "custom";
+      const inp = leer();
+      $("vacio").hidden = !!inp; $("vivo").hidden = !inp;
+      if (!inp) { $("c-ch").hidden = true; $("cot").hidden = true; $("cot-vacio").hidden = false; $("live").textContent = ""; ultimo = null; return }
+      const { pf, mp } = perfiles();
+      const P = params();
+      const r = Motor.dimensionar(inp, P, pf, mp);
+      ultimo = r; render(inp, r, P);
+    }
+
+    /* ---- Eventos ---- */
+    $("ver").textContent = CFG.metodologia;
+    $("tipo").innerHTML = CFG.aparatos.map((a, i) => `<option value="${i}">${a.n} (${a.w} W típico)</option>`).join("");
+    pintaLoc(); pintaParams(); pintaApps();
+    $("est").addEventListener("change", () => { pintaLoc(); calc() });
+    $("f").addEventListener("submit", e => e.preventDefault());
+    $("f").addEventListener("input", e => {
+      const t = e.target;
+      if (t.closest("#aps")) { const i = +t.closest(".ap").dataset.i, f = t.dataset.f; if (f === "s") apps[i].s = t.checked; else if (f === "n") apps[i].n = t.value; else if (f === "p") apps[i].p = t.value; else apps[i][f] = t.value.trim() === "" ? NaN : Number(t.value); touched.ap = true }
+      else if (t.id) touched[t.id] = true;
+      if (t.classList.contains("cfg")) guardar();
+      calc();
+    });
+    $("f").addEventListener("change", e => { if (e.target.classList.contains("cfg")) guardar(); calc() });
+    $("f").addEventListener("focusout", e => { if (e.target.type === "number" && e.target.id) { touched[e.target.id] = true; calc() } });
+    $("aps").addEventListener("click", e => { const b = e.target.closest("[data-del]"); if (b) { apps.splice(+b.dataset.del, 1); pintaApps(); touched.ap = true; calc() } });
+    $("add").onclick = () => { const a = CFG.aparatos[+$("tipo").value]; apps.push({ n: a.n, w: a.w, q: 1, h: NaN, s: false, p: "ambos" }); pintaApps(); calc() };
+    $("precios").addEventListener("input", () => { guardar(); if (ultimo) renderCot(ultimo) });
+    $("rst-par").onclick = () => { CFG.params.forEach(p => $("par-" + p.k).value = p.v); guardar(); calc() };
+    $("chart").addEventListener("click", e => { const g = e.target.closest("g[data-i]"); if (g) { sel = +g.dataset.i; document.querySelectorAll("#chart g[data-i]").forEach(x => x.classList.toggle("on", +x.dataset.i === sel)); pintaSel() } });
+    $("chart").addEventListener("keydown", e => { if (e.key !== "Enter" && e.key !== " ") return; const g = e.target.closest("g[data-i]"); if (g) { e.preventDefault(); g.dispatchEvent(new Event("click", { bubbles: true })) } });
+
+    /* ---- Respaldo ---- */
+    const LASTEXP = "esq-offgrid-ultimo-respaldo";
+    function avisoRespaldo() {
+      let t = null; try { t = localStorage.getItem(LASTEXP) } catch (e) { }
+      const el = $("al-resp"); const hayDatos = !!store.get();
+      if (!hayDatos) { el.hidden = true; return }
+      if (!t) { el.hidden = false; el.textContent = "Aún no has exportado un respaldo. En Safari de iPhone los datos pueden borrarse si no usas la página por varios días."; return }
+      const d = Math.floor((Date.now() - Number(t)) / 864e5);
+      el.hidden = d < 14; el.textContent = `Tu último respaldo fue hace ${d} días. Conviene exportar uno nuevo.`;
+    }
+    $("exp").onclick = () => {
+      $("e-resp").textContent = ""; guardar();
+      const blob = new Blob([JSON.stringify(snapshot(), null, 2)], { type: "application/json" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "ecosolar-offgrid-respaldo.json"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      try { localStorage.setItem(LASTEXP, String(Date.now())) } catch (e) { }
+      $("ok-resp").textContent = "Respaldo exportado."; avisoRespaldo();
+    };
+    $("imp").onclick = () => $("file").click();
+    $("file").addEventListener("change", () => {
+      const f = $("file").files[0]; $("e-resp").textContent = ""; $("ok-resp").textContent = "";
+      if (!f) return;
+      if (f.size > 200000) { $("e-resp").textContent = "El archivo es demasiado grande para ser un respaldo."; $("file").value = ""; return }
+      const rd = new FileReader();
+      rd.onload = () => {
+        let o; try { o = JSON.parse(rd.result) } catch (e) { $("e-resp").textContent = "El archivo no es un JSON válido; no se importó."; $("file").value = ""; return }
+        const v = validar(o);
+        if (!v.ok) { $("e-resp").textContent = v.msg; $("file").value = ""; return }
+        aplicar(o); guardar(); calc(); $("ok-resp").textContent = "Respaldo importado correctamente."; $("file").value = "";
+      };
+      rd.onerror = () => { $("e-resp").textContent = "No se pudo leer el archivo." };
+      rd.readAsText(f);
+    });
+    $("rst").onclick = () => {
+      if (!confirm("¿Restablecer precios, perfiles y supuestos? Esta acción no se puede deshacer.")) return;
+      store.del(); PRE_IDS.concat(PERF_IDS, ["cust"]).forEach(k => $(k).value = ""); $("mInt").checked = false; $("pan").value = "730";
+      CFG.params.forEach(p => $("par-" + p.k).value = p.v); calc(); avisoRespaldo(); $("ok-resp").textContent = "Configuración restablecida.";
+    };
+
+    // Recuperar configuración guardada (si es válida)
+    (function () { const raw = store.get(); if (!raw) return; try { const o = JSON.parse(raw); if (validar(o).ok) aplicar(o) } catch (e) { } })();
+    avisoRespaldo(); calc();
+  </script>
+</body>
+
+</html>
